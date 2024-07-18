@@ -158,6 +158,43 @@
         .bang {
             margin-bottom: 30px;
         }
+
+        .team-intro { 
+
+            font-size: medium;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 70px;
+        } 
+
+        .team-intro2 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0px;
+        }
+        
+        .pro {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0px;
+            margin-top: 30px;
+            
+        }
+
+        .pro1 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0px;
+        }
+
     </style>
     <script type="module">
         // Firebase SDK 라이브러리 가져오기
@@ -376,11 +413,24 @@
             <h1> 감자 샐러드</h1>
             여러 재료들이 모여 샐러드가 되었습니다
         </div>
+        
+        <div class="team-intro"> 
+            <h2> 저희 팀의 특징과 목표는 이렇습니다.</h2>
+            <h3 class="team-intro2"> 각자의 개성이 뚜렷하지만, 한 팀으로 어우러져 완성되는 샐러드라고 생각합니다. 
+                그리고 당연하게도 궁극적인 목표는 취업입니다. 
+            </h3>
+                <div class="pro">
+                    <h2>우리들의 약속</h2>
+                    <h3 class="pro1">힘들고 번아웃이 오더라도 서로서로 도와주며, 낙오되지 않고 좋은 회사 취업하기로 약속 !~!</h3>
+                </div>
+        </div>
         <div class="top2">
             <h1> 재료를 선택해주세요</h1>
             재료의 이미지를 클릭하면 소개페이지로 이동합니다 !
         </div>
     </div>
+
+   
 
     <div class="salad">
         <iframe src="salad.html" height="1200px" width="100%"></iframe>
