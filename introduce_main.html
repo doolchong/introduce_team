@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8">
+    <title>의견 남기기</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+
+        .top_of_top {
+            font-family: "Noto Sans KR", sans-serif;
+        }
+
+        .top {
+            font-size: larger;
+            background-color: #2f5b4c;
+            color: white;
+            height: 200px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding-bottom: 40px;
+            margin-bottom: 50px;
+        }
+
+        .top2 {
+            font-size: larger;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 70px;
+        }
+
+        .top3 {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: left;
+            margin-left: 200px;
+        }
+
+        .top4 {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: left;
+            margin-left: 200px;
+        }
+
+        .bodyb {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: auto;
+            scale: 1.3;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 20px;
+            margin-top: 100px;
+        }
+
+        .text-section {
+            margin-right: 50px;
+        }
+
+        .text-section h1 {
+            font-size: 32px;
+            margin: 0px;
+        }
+
+        .text-section p {
+            font-size: 16px;
+            color: gray;
+        }
+
+        .form-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-section label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-section input,
+        .form-section textarea {
+            margin-bottom: 15px;
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .form-section button {
+            padding: 10px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .guestbook {
+            width: 60%;
+        }
+
+        .guestbook-entry {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .entry-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .entry-header span {
+            margin-right: 10px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination button {
+            padding: 10px;
+            margin: 0 5px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .pagination button:disabled {
+            background-color: gray;
+            cursor: not-allowed;
+        }
+
+        .bang {
+            margin-bottom: 30px;
+        }
+    </style>
+    <script type="module">
+        // Firebase SDK 라이브러리 가져오기
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, startAfter, endAt, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+
+        // Firebase 설정
+        const firebaseConfig = {
+            apiKey: "AIzaSyBx4Falpqu6-kPugQxK6gEqX0PJaV09H6E",
+            authDomain: "sparta-b60f5.firebaseapp.com",
+            projectId: "sparta-b60f5",
+            storageBucket: "sparta-b60f5.appspot.com",
+            messagingSenderId: "1064158548151",
+            appId: "1:1064158548151:web:5efaa970161608e572bd32",
+            measurementId: "G-TVQFT6YJ7W"
+        };
+
+        // Firebase 인스턴스 초기화
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let lastVisible = null;
+        let firstVisible = null;
+        let isLastPage = false;
+        let isFirstPage = true;
+        const pageSize = 5;
+        let index = 0;
+
+        // 페이지 로드 시 기존 방명록 데이터 불러오기
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadGuestbookEntries();
+        });
+
+        async function loadGuestbookEntries(direction = 'initial') {
+            const guestbook = document.querySelector('.guestbook');
+            guestbook.innerHTML = ''; // 기존 항목 초기화
+
+            let q;
+            if (direction === 'next' && lastVisible) {
+                q = query(collection(db, "guestbook"), orderBy("id", "desc"), startAfter(lastVisible), limit(pageSize));
+            } else if (direction === 'prev' && firstVisible) {
+                q = query(collection(db, "guestbook"), orderBy("id", "desc"), endAt(firstVisible), limit(pageSize));
+            } else {
+                q = query(collection(db, "guestbook"), orderBy("id", "desc"), limit(pageSize));
+            }
+
+            const querySnapshot = await getDocs(q);
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const newEntry = document.createElement('div');
+                newEntry.className = 'guestbook-entry';
+
+                const entryHeader = document.createElement('div');
+                entryHeader.className = 'entry-header';
+
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = data.name;
+                const datetimeSpan = document.createElement('span');
+                datetimeSpan.textContent = data.datetime;
+
+                entryHeader.appendChild(nameSpan);
+                entryHeader.appendChild(datetimeSpan);
+
+                const commentP = document.createElement('p');
+                commentP.textContent = data.comment;
+                
+                //수정버튼
+                const editButton = document.createElement('button');
+                editButton.textContent = '수정';
+                editButton.addEventListener('click', () => {
+                    window.editComment(data.id);
+                });
+                
+                //삭제버튼
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = '삭제';
+                deleteButton.addEventListener('click', () => {
+                    console.log('Delete button clicked for entry:', data);
+                    window.deleteComment(data.id);
+                });
+
+                newEntry.appendChild(entryHeader);
+                newEntry.appendChild(commentP);
+                newEntry.appendChild(editButton);
+                newEntry.appendChild(deleteButton);
+
+                guestbook.appendChild(newEntry);
+            });
+
+            // 페이지네이션을 위한 첫 번째 및 마지막 문서 추적
+            firstVisible = querySnapshot.docs[0];
+            lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+            // 첫 페이지 여부 확인
+            isFirstPage = direction === 'initial' || (direction === 'prev' && querySnapshot.docs.length < pageSize);
+
+            // 마지막 페이지 여부 확인
+            isLastPage = querySnapshot.docs.length < pageSize;
+
+            // 페이지네이션 버튼 상태 업데이트
+            updatePaginationButtons();
+        }
+
+        function updatePaginationButtons() {
+            const prevButton = document.getElementById('prevButton');
+            const nextButton = document.getElementById('nextButton');
+
+            prevButton.disabled = isFirstPage;
+            nextButton.disabled = isLastPage;
+        }
+
+        // 댓글 제출 함수
+        window.submitComment = async function () {
+            const name = document.getElementById('name').value;
+            const comment = document.getElementById('comment').value;
+
+            if (name && comment) {
+                const datetime = new Date().toLocaleString();
+                const timestamp = new Date();
+
+                addDoc(collection(db, "guestbook"), {
+                    id: index,
+                    name: name,
+                    comment: comment,
+                    datetime: datetime,
+                    timestamp: timestamp
+                })
+                    .then(() => {
+                        loadGuestbookEntries('initial');
+                        document.getElementById('name').value = '';
+                        document.getElementById('comment').value = '';
+                        alert('방명록이 추가되었습니다.');
+                    })
+                    .catch((error) => {
+                        console.error('Error adding document: ', error);
+                        alert('방명록 추가에 실패했습니다.');
+                    });
+
+                index++; // 전역 변수 index 사용
+            } else {
+                alert('이름과 코멘트를 입력해주세요.');
+            }
+        };
+
+        async function getTotalGuestbookEntries() {
+            const querySnapshot = await getDocs(
+                query(
+                    collection(db, "guestbook"),
+                    orderBy("timestamp", "desc")
+                )
+            );
+
+            const totalEntries = querySnapshot.size;
+            return totalEntries;
+        }
+
+        window.editComment = async function (id) {
+            const cnt = await getTotalGuestbookEntries() - 1;
+            const guestbookEntries = document.querySelectorAll('.guestbook-entry');
+            const entryHeader = guestbookEntries[cnt - id].querySelector('.entry-header');
+            const commentP = guestbookEntries[cnt - id].querySelector('p');
+
+            const nameInput = document.createElement('input');
+            nameInput.value = entryHeader.querySelector('span:first-child').textContent;
+            const commentInput = document.createElement('textarea');
+            commentInput.value = commentP.textContent;
+
+            entryHeader.replaceChild(nameInput, entryHeader.querySelector('span:first-child'));
+            commentP.replaceChild(commentInput, commentP.firstChild);
+
+            const saveButton = document.createElement('button');
+            saveButton.textContent = '저장';
+            saveButton.addEventListener('click', async () => {
+                const updatedName = nameInput.value;
+                const updatedComment = commentInput.value;
+
+                const docRef = await getDocs(query(collection(db, "guestbook"), orderBy("id", "desc"), limit(pageSize)));
+                const doc = docRef.docs[cnt - id];
+
+                await updateDoc(doc.ref, {
+                    name: updatedName,
+                    comment: updatedComment,
+                });
+
+                await loadGuestbookEntries('initial');
+            });
+
+            guestbookEntries[cnt - id].appendChild(saveButton);
+        };
+
+        // 게시글 삭제 함수
+        window.deleteComment = async function (id) {
+            const cnt = await getTotalGuestbookEntries() - 1;
+            const docRef = await getDocs(query(collection(db, "guestbook"), orderBy("timestamp", "desc"), limit(pageSize)));
+            const doc = docRef.docs[cnt - id];
+
+            await deleteDoc(doc.ref);
+            await loadGuestbookEntries('initial');
+        };
+
+        // 다음 페이지 로드 함수
+        window.loadNextPage = async function () {
+            await loadGuestbookEntries('next');
+        };
+
+        // 이전 페이지 로드 함수
+        window.loadPrevPage = async function () {
+            await loadGuestbookEntries('prev');
+        };
+    </script>
+</head>
+
+<body>
+    <div class="top_of_top">
+        <div class="top">
+            <h1> 감자 샐러드</h1>
+            여러 재료들이 모여 샐러드가 되었습니다
+        </div>
+        <div class="top2">
+            <h1> 재료를 선택해주세요</h1>
+            재료의 이미지를 클릭하면 소개페이지로 이동합니다 !
+        </div>
+    </div>
+
+    <div class="salad">
+        <iframe src="salad.html" height="1200px" width="100%"></iframe>
+    </div>
+
+    <div class="bodyb">
+        <div class="container">
+            <div class="text-section">
+                <h1>의견을 남겨주세요</h1>
+                <p>새로운 방명록은 언제나 환영이야(익명은 안된단다)</p>
+            </div>
+            <div class="form-section">
+                <label for="name">Name</label>
+                <input type="text" id="name" placeholder="Enter your name">
+                <label for="comment">Comment</label>
+                <textarea id="comment" rows="1" placeholder="Enter your Comment"></textarea>
+                <button type="submit" onclick="submitComment()">Send Comment</button>
+            </div>
+        </div>
+
+
+        <div class="bang">
+            <h1 align="center"> 방명록</h1>
+            <p> (정보이용료 1건당 50원 부과됩니다)</p>
+        </div>
+
+
+
+        <div class="guestbook"></div>
+
+        <div class="pagination">
+            <button id="prevButton" onclick="loadPrevPage()">Previous</button>
+            <button id="nextButton" onclick="loadNextPage()">Next</button>
+        </div>
+    </div>
+</body>
+
+</html>

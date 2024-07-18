@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>멤버 소개 페이지</title>
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Dongle&family=Gamja+Flower&display=swap');
+
+        * {
+            font-family: "Dongle", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .parent {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 10px;
+            margin: 1px;
+            padding: 10px;
+            height: 100px;
+        }
+
+        .member {
+            width: 100px;
+            height: 100px;
+            margin-right: auto;
+            margin-left: 500px;
+            margin-top: 100px;
+            font-size: 72px;
+            color: aliceblue;
+        }
+
+        .img {
+            margin-top: 100px;
+            margin-right: 500px;
+            filter: drop-shadow(3px 3px 3px #000);
+        }
+
+        .say {
+            font-size: 30px;
+            margin-right: auto;
+            margin-left: 500px;
+            margin-top: 150px;
+            color: aliceblue;
+        }
+
+        .btn {
+            background-color: #D04C00;
+            border-radius: 5px;
+            border-color: aliceblue;
+            border-width: 2px;
+            font-size: 30px;
+            margin-right: auto;
+            margin-left: 500px;
+            margin-top: 20px;
+            filter: drop-shadow(2px 2px 2px #000);
+        }
+
+        .mycards {
+            margin: 150px auto 20px auto;
+            width: 1200px;
+        }
+
+
+        .title {
+            margin-top: 100px;
+            margin-right: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .say3 {
+            margin: auto;
+            width: 1200px;
+            font-size: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .say4 {
+            margin: auto;
+            width: 1200px;
+            font-size: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .next-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            background-position: center;
+            background-size: cover;
+        }
+
+        .my_background {
+            background-color: #D04C00;
+            padding-bottom: 100px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .my_body {
+            background-color: #FFE5CF;
+            width: 1600px;
+            height: 700px;
+            padding-top: auto;
+            padding-bottom: auto;
+            margin-left: auto;
+            margin-right: auto;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+        }
+
+        .my_body2 {
+            background-color: #FFE5CF;
+            width: 1600px;
+            height: 400px;
+            padding-top: auto;
+            padding-bottom: auto;
+            margin-left: auto;
+            margin-right: auto;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+        }
+
+        .p1 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class='my_background'>
+        <div class='parent'>
+
+            <div class='member' style="filter: drop-shadow(2px 2px 2px #000);"> 이건 </div>
+
+            <div class='img'><img src="https://i.ibb.co/84H3Rv9/photo2.jpg" width="300px" height="350px"
+                    class="rounded float-end" alt="https://i.ibb.co/84H3Rv9/photo2.jpg"></div>
+
+        </div>
+        <div class='say' style="filter: drop-shadow(2px 2px 2px #000);"> 감자 샐러드의 당근을 맡고 있는 이건입니다 </div>
+
+        <button type="button" class="btn btn-dark" onclick="window.open('https://velog.io/@doolchong/posts')"> GET velog</button>
+        <div class="my_body">
+            <div class="mycards">
+                <p class="p1">이건 그는 누엇인가?</p>
+                <div class="row row-cols-1 row-cols-md-3 g-3">
+                    <div class="col">
+                        <div class="card h-100" style="border-color: #FFE5CF; border-radius: 15px;">
+                            <img src="https://i.ibb.co/zrfLbcZ/image.png" style="background-color: #FFE5CF;"
+                                width="300px" height="400px" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title" style="font-size: 36px;">목석같지만...</h5>
+                                <p class="card-text" style="font-size: 28px;">알고보면 말랑말랑 말랑카우</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100" style="border-color: #FFE5CF; border-radius: 15px;">
+                            <img src="https://i.ibb.co/PY3jH7W/image.jpg" style="background-color: #FFE5CF; border-radius: 15px;"
+                                width="300px" height="400px" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title" style="font-size: 36px;">MBTI</h5>
+                                <p class="card-text" style="font-size: 28px;">INFJ</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card h-100" style="border-color: #FFE5CF; border-radius: 15px;">
+                            <img src="https://i.ibb.co/MnNHY5M/16.png" style="background-color: #FFE5CF;"
+                                width="300px" height="400px" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title" style="font-size: 36px;">운동 좋아해요</h5>
+                                <p class="card-text" style="font-size: 28px;">유산소는 안했었는데 다이어트 하다보니 유산소도 재밌어요</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="my_body2">
+            <div class='say2'>
+                <h1 class='title'>나의 장단점</h1>
+                <div class='say3'>
+                    장점 <p> 뭐든 후회없이 잘할려고 하는 편이에요</p>
+                    <p> 맡은 역할은 어떻게든 끝까지 해내는 편이에요</p>
+                </div>
+                <div class='say4'>
+                    단점 <p> 집중력이 많이 안좋아요</p>
+                    <p> 얘기를 하다가 딴길로 샐 때가 있어요</p>
+                </div>
+            </div>
+        </div>
+        <div class="next-btn" style="margin-right: 495px;">
+            <a href="salad.html"><button class="btn btn-dark" style="color: aliceblue;">처음으로</button></a>
+        </div>
+    </div>
+
+    
+
+</body>
+
+</html>
